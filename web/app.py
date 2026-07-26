@@ -1,27 +1,24 @@
-import sys
 import os
-import json
+import sys
 import requests
-import nltk # Added for auto-download
+import json
+import nltk
 from flask import Flask, render_template, request, jsonify
 from datetime import date
 from dotenv import load_dotenv
 
-# --- 1. INFRASTRUCTURE SETUP ---
+# --- 1. PREPARE CLOUD ENVIRONMENT ---
 load_dotenv()
 
-# NEW: Automated NLTK Data Check for Cloud Production
-def setup_nltk():
-    required_data = ['punkt', 'punkt_tab', 'wordnet', 'omw-1.4']
-    for data in required_data:
-        try:
-            nltk.data.find(f'tokenizers/{data}' if 'punkt' in data else f'corpora/{data}')
-        except LookupError:
-            nltk.download(data)
+# Automatically download required NLTK data on startup
+def prepare_nltk():
+    pkgs = ['punkt', 'punkt_tab', 'wordnet', 'omw-1.4']
+    for p in pkgs:
+        nltk.download(p, quiet=True)
 
-setup_nltk()
+prepare_nltk()
 
-# Setup paths
+# Setup paths so Flask can find the 'chatbot' folder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
@@ -30,71 +27,58 @@ from chatbot.chatbot_utils import predict_class, get_response
 
 app = Flask(__name__)
 
-# --- 2. CONFIGURATION ---
+# --- 2. UTILITY LOGIC ---
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
-EVEREST_LAT = "27.98"
-EVEREST_LON = "86.92"
-
-# --- 3. LOGIC ENGINES ---
 
 def get_everest_weather():
-    if not WEATHER_API_KEY:
-        return {"temp": "--", "wind": "--", "desc": "Key Missing"}
     try:
-        url = f"https://api.openweathermap.org/data/2.5/weather?lat={EVEREST_LAT}&lon={EVEREST_LON}&appid={WEATHER_API_KEY}&units=metric"
-        res = requests.get(url, timeout=5)
-        data = res.json()
-        if res.status_code != 200:
-            return {"temp": "--", "wind": "--", "desc": "Activating..."}
+        url = f"https://api.openweathermap.org/data/2.5/weather?lat=27.98&lon=86.92&appid={WEATHER_API_KEY}&units=metric"
+        res = requests.get(url, timeout=5).json()
         return {
-            "temp": round(data["main"]["temp"]),
-            "wind": round(data["wind"]["speed"] * 3.6),
-            "desc": data["weather"][0]["description"].title()
+            "temp": round(res["main"]["temp"]),
+            "wind": round(res["wind"]["speed"] * 3.6),
+            "desc": res["weather"][0]["description"].title()
         }
-    except Exception as e:
-        print(f"Weather API Error: {e}")
+    except:
         return {"temp": "--", "wind": "--", "desc": "Offline"}
 
 def get_summit_countdown():
     today = date.today()
-    summit_start = date(today.year, 5, 10)
-    if today > summit_start:
-        summit_start = date(today.year + 1, 5, 10)
-    return (summit_start - today).days
+    target = date(today.year, 5, 10)
+    if today > target:
+        target = date(today.year + 1, 5, 10)
+    return (target - today).days
 
-# --- 4. DATA LOADING ---
-INTENTS_PATH = os.path.join(BASE_DIR, "chatbot", "intents.json")
+# Load sidebar data from intents.json
 try:
-    with open(INTENTS_PATH, "r", encoding="utf-8") as f:
+    with open(os.path.join(BASE_DIR, "chatbot", "intents.json"), "r", encoding="utf-8") as f:
         intents_data = json.load(f)
     sidebar_data = [{"tag": i["tag"], "patterns": i["patterns"][:3]} for i in intents_data["intents"]]
-except Exception as e:
+except:
     sidebar_data = []
 
-# --- 5. ROUTES ---
+# --- 3. ROUTES ---
 
 @app.route("/")
 def index():
-    weather = get_everest_weather()
-    countdown = get_summit_countdown()
-    return render_template("index.html", sidebar=sidebar_data, weather=weather, countdown=countdown)
+    return render_template("index.html", 
+                           sidebar=sidebar_data, 
+                           weather=get_everest_weather(), 
+                           countdown=get_summit_countdown())
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_data = request.json
-    if not user_data or "message" not in user_data:
-        return jsonify({"response": "No message received."}), 400
-    user_message = user_data.get("message")
+    user_message = request.json.get("message")
     try:
-        # AI Pipeline execution
-        intent_tag = predict_class(user_message)
-        bot_response = get_response(intent_tag)
-        return jsonify({"response": bot_response})
+        # Run user input through the TensorFlow brain
+        tag = predict_class(user_message)
+        response = get_response(tag)
+        return jsonify({"response": response})
     except Exception as e:
-        # This captures the real error in the Render Logs
-        print(f"Chat Logic Error: {str(e)}") 
-        return jsonify({"response": "My internal systems are recalibrating. Try again in a moment."})
+        print(f"RUNTIME CHAT ERROR: {str(e)}")
+        return jsonify({"response": "My systems are still waking up. Please ask me again in 5 seconds!"})
 
 if __name__ == "__main__":
+    # Render requires port handling
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port)

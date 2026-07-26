@@ -7,43 +7,46 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 
-# --- 1. PATH CONFIGURATION (CRITICAL FOR CLOUD) ---
-# This ensures we find the files regardless of where the script is called from
-current_dir = os.path.dirname(os.path.abspath(__file__)) # chatbot/
-BASE_DIR = os.path.dirname(current_dir)                  # Root/
+# --- 1. DYNAMIC PATH SYSTEM ---
+# This finds the folders relative to this script, no matter where it is run
+CURRENT_FILE_DIR = os.path.dirname(os.path.abspath(__file__)) # chatbot/
+BASE_DIR = os.path.dirname(CURRENT_FILE_DIR)                  # Everest-Intelligence-AI/
 MODEL_DIR = os.path.join(BASE_DIR, "model")
 CHATBOT_DIR = os.path.join(BASE_DIR, "chatbot")
 
-# --- 2. ASSET LOADING ---
 lemmatizer = WordNetLemmatizer()
 
-def load_chatbot_assets():
+def load_ai_assets():
+    """Loads the neural network and vocabulary from the cloud filesystem"""
     try:
-        # Load Intents with UTF-8 encoding for safety
-        with open(os.path.join(CHATBOT_DIR, "intents.json"), "r", encoding="utf-8") as f:
-            intents = json.load(f)
+        # Define exact absolute paths for the server
+        intents_path = os.path.join(CHATBOT_DIR, "intents.json")
+        words_path = os.path.join(MODEL_DIR, "words.pkl")
+        classes_path = os.path.join(MODEL_DIR, "classes.pkl")
+        model_path = os.path.join(MODEL_DIR, "chatbot_model.keras")
+
+        # Load files
+        with open(intents_path, "r", encoding="utf-8") as f:
+            ints = json.load(f)
         
-        # Load Pickles
-        words = pickle.load(open(os.path.join(MODEL_DIR, "words.pkl"), "rb"))
-        classes = pickle.load(open(os.path.join(MODEL_DIR, "classes.pkl"), "rb"))
+        w = pickle.load(open(words_path, "rb"))
+        c = pickle.load(open(classes_path, "rb"))
+        m = load_model(model_path)
         
-        # Load Keras Model
-        model = load_model(os.path.join(MODEL_DIR, "chatbot_model.keras"))
-        
-        return intents, words, classes, model
+        print("✅ SUCCESS: AI assets loaded from the filesystem.")
+        return ints, w, c, m
     except Exception as e:
-        print(f"Error loading chatbot assets: {e}")
-        # Return None to handle gracefully if needed
+        print(f"❌ CRITICAL LOAD FAILURE: {str(e)}")
         return None, None, None, None
 
-intents, words, classes, model = load_chatbot_assets()
+# Initialize assets once when server starts
+intents, words, classes, model = load_ai_assets()
 
-# --- 3. PROCESSING FUNCTIONS ---
+# --- 2. LOGIC FUNCTIONS ---
 
 def clean_up_sentence(sentence):
-    # Tokenize the sentence
+    # Proper tokenization
     sentence_words = nltk.word_tokenize(sentence)
-    # Lemmatize and lowercase
     return [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
 
 def bag_of_words(sentence):
@@ -56,31 +59,25 @@ def bag_of_words(sentence):
     return np.array(bag)
 
 def predict_class(sentence):
-    # If model failed to load, return fallback
     if model is None:
-        return "fallback"
+        return "asset_error"
         
     bow = bag_of_words(sentence)
-    res = model.predict(np.array([bow]), verbose=0)[0] # verbose=0 keeps logs clean
+    # verbose=0 keeps the Render logs clean
+    res = model.predict(np.array([bow]), verbose=0)[0]
     
     top_index = np.argmax(res)
-    top_prob = res[top_index]
-    
-    # Confidence Threshold (Institutional Standard)
-    threshold = 0.75
-    if top_prob < threshold:
-        return "fallback"
-    
-    return classes[top_index]
+    # Only return the tag if confidence is > 70%
+    return classes[top_index] if res[top_index] > 0.70 else "fallback"
 
-def get_response(intent_tag):
-    # If no assets loaded
+def get_response(tag):
+    if tag == "asset_error":
+        return "I'm having trouble accessing my memory modules right now."
     if intents is None:
-        return "I'm sorry, my internal systems are offline."
+        return "I'm sorry, my internal systems are currently offline."
         
-    for item in intents["intents"]:
-        if item["tag"] == intent_tag:
-            return random.choice(item["responses"])
+    for i in intents["intents"]:
+        if i["tag"] == tag:
+            return random.choice(i["responses"])
             
-    # Default fallback response if tag isn't found in JSON
-    return "I'm not exactly sure how to answer that. Could you try rephrasing?"
+    return "I'm not sure how to answer that specific query. Could you try rephrasing?"
