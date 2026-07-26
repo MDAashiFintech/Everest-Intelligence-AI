@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everest AI | Terminal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- ANIMATED INTRO OVERLAY -->
+  <div id="intro-overlay">
+      <div class="intro-content">
+          <div class="intro-mountain">🏔️</div>
+          <h1 class="intro-text">Everest Intelligence</h1>
+          <div class="intro-loader"></div>
+      </div>
+  </div>
+
+  <div class="app-container">
+    <div class="sidebar">
+      <h2><i class="fa-solid fa-mountain"></i> Summit Status</h2>
+      
+      <!-- Special Feature: Dynamic Status Center -->
+      <div class="weather-widget">
+        <div style="font-size: 11px; font-weight: 700; color: #9ca3af; margin-bottom: 8px;">LIVE BASE CAMP CONDITIONS</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <!-- These curly braces tell Flask to insert the data from app.py -->
+            <span style="font-size: 20px; font-weight: 600;">{{ weather.temp }}°C</span>
+            <i class="fa-solid fa-wind" style="color: #7c3aed;"></i>
+        </div>
+        <div style="font-size: 10px; color: #6b7280; margin-top: 5px;">
+            Winds: {{ weather.wind }}km/h • {{ weather.desc }}
+        </div>
+      </div>
+
+      <h2><i class="fa-solid fa-calendar-day"></i> Expedition Clock</h2>
+      <div class="weather-widget" style="background: rgba(124, 58, 237, 0.05); border-color: rgba(124, 58, 237, 0.2);">
+        <div style="font-size: 11px; font-weight: 700; color: #7c3aed; margin-bottom: 5px;">DAYS TO SUMMIT WINDOW</div>
+        <div style="font-size: 24px; font-weight: 800; color: #1f2937;">{{ countdown }} Days</div>
+        <div style="font-size: 10px; color: #6b7280; margin-top: 5px;">Next Season opens May 10th</div>
+      </div>
+
+      <h2><i class="fa-solid fa-toolbox"></i> Rapid Resources</h2>
+      <div class="sidebar-section" style="padding: 0 5px;">
+          <button onclick="askFromSidebar('What equipment do I need to climb Everest?')" 
+                  style="background: rgba(124, 58, 237, 0.1); 
+                         color: #7c3aed; 
+                         font-weight: 600; 
+                         border: 1px solid rgba(124, 58, 237, 0.2);
+                         border-radius: 12px;
+                         padding: 12px;
+                         width: 100%;
+                         display: flex;
+                         align-items: center;
+                         justify-content: center;
+                         gap: 10px;">
+              <i class="fa-solid fa-list-check"></i> Gear Checklist
+          </button>
+      </div>
+
+      <h2>🧭 Knowledge Base</h2>
+      <div class="sidebar-scroll">
+        {% for section in sidebar %}
+          <div class="sidebar-section">
+            <h3 onclick="toggleSection('{{ section.tag }}')">
+                {{ section.tag.replace('_', ' ').title() }}
+                <i class="fa-solid fa-angle-down" style="font-size: 10px;"></i>
+            </h3>
+            <div id="{{ section.tag }}-questions" style="display: none;">
+              {% for q in section.patterns %}
+                <button onclick="askFromSidebar('{{ q }}')">{{ q }}</button>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="chat-area">
+      <div class="hero-header">
+        <div style="font-size: 24px; margin-bottom: 5px;">✨</div>
+        <h1>Ask our AI anything about Mt. Everest</h1>
+      </div>
+
+      <div class="topics">
+        <button onclick="showSuggestions('climb')">🧗 Climbing</button>
+        <button onclick="showSuggestions('location')">📍 Location</button>
+        <button onclick="showSuggestions('health')">🩺 Health</button>
+        <button onclick="showSuggestions('time')">📅 Best Time</button>
+      </div>
+
+      <div id="suggestions"></div>
+
+ <div id="chatbox">
+          <div class="message bot">
+              <span class="label">Everest AI</span>
+              Greetings! I am the Everest Intelligence Agent. How can I assist your expedition today?
+          </div>
+      </div>
+
+      <div class="typing-indicator" id="typing">Everest AI is analyzing data...</div>
+
+      <div class="input-area">
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="Type your query..." autocomplete="off">
+            <button id="sendBtn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Handle Intro & Entrance Animations
+    window.addEventListener('load', () => {
+        const overlay = document.getElementById('intro-overlay');
+        const container = document.querySelector('.app-container');
+        
+        if (!sessionStorage.getItem('introPlayed')) {
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    container.classList.add('visible');
+                }, 800);
+                sessionStorage.setItem('introPlayed', 'true');
+            }, 2500); 
+        } else {
+            overlay.style.display = 'none';
+            container.classList.add('visible');
+        }
+    });
+
+    const suggestionMap = {
+      climb: ["What is the cost?", "Minimum age?", "Who first climbed it?"],
+      location: ["Where is it located?", "Which country is it in?"],
+      health: ["Safety measures?", "Emergency rescue?", "Mental strength?"],
+      time: ["Typical weather?", "Climb duration?", "Best season?"]
+    };
+
+    function showSuggestions(topic) {
+      const box = document.getElementById("suggestions");
+      box.innerHTML = "";
+      suggestionMap[topic].forEach((q) => {
+        const btn = document.createElement("button");
+        btn.innerText = q;
+        btn.onclick = () => { document.getElementById("userInput").value = q; sendMessage(); };
+        box.appendChild(btn);
+      });
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage("ME", message, "user");
+      input.value = "";
+      document.getElementById('typing').style.display = 'block';
+
+      try {
+        const res = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        document.getElementById('typing').style.display = 'none';
+        appendMessage("Everest AI", data.response, "bot");
+      } catch (err) {
+        document.getElementById('typing').style.display = 'none';
+        appendMessage("SYSTEM", "Error connecting to AI.", "user");
+      }
+    }
+
+    function appendMessage(sender, text, cls) {
+      const chatbox = document.getElementById("chatbox");
+      const div = document.createElement("div");
+      div.className = `message ${cls}`; // This applies 'user' or 'bot'
+      
+      // Formatting
+      let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      formattedText = formattedText.replace(/\n/g, '<br>');
+
+      div.innerHTML = `<span class="label">${sender}</span>${formattedText}`;
+      chatbox.appendChild(div);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function toggleSection(tag) {
+      const el = document.getElementById(tag + "-questions");
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    function askFromSidebar(q) {
+      document.getElementById("userInput").value = q;
+      sendMessage();
+    }
+
+    document.getElementById("userInput").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>

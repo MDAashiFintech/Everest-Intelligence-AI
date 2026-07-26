@@ -1,0 +1,661 @@
+{
+  "intents": [
+    {
+      "tag": "greetings",
+      "patterns": [
+        "Hello",
+        "Hi",
+        "Hey",
+        "Good morning",
+        "Good afternoon",
+        "Greetings",
+        "What's up?",
+        "Hey there"
+      ],
+      "responses": [
+        "Hello! How can I assist you about Mount Everest?",
+        "Hi there! Ask me anything about climbing or visiting Everest.",
+        "Greetings! I'm Everest AI. How can I help you today?"
+      ]
+    },
+    {
+      "tag": "chitchat",
+      "patterns": [
+        "how are you",
+        "can you smile",
+        "are you human",
+        "tell me a joke",
+        "what is your name"
+      ],
+      "responses": [
+        "I'm a chatbot trained to assist with Mount Everest information. 😊",
+        "I may not have feelings, but I'm here to help you!"
+      ]
+    },
+    {
+      "tag": "mount_everest_location",
+      "patterns": [
+        "Where is it?",
+        "Where is it located?",
+        "Location?",
+        "Tell me the location",
+        "where it located",
+        "Where is Mount Everest?"
+      ],
+      "responses": [
+        "Mount Everest is located in the Himalayas on the border between Nepal and China (Tibet).",
+        "Mount Everest is situated in the Himalayan mountain range, straddling the border between Nepal and China (Tibet).",
+        "Mount Everest lies on the border of Nepal and Tibet, in the Himalayas."
+      ]
+    },
+    {
+      "tag": "mount_everest_height",
+      "patterns": [
+        "What is the elevation of Mount Everest?",
+        "How high is Mount Everest?",
+        "Tell me the elevation of Mount Everest",
+        "How tall is Mount Everest?",
+        "What is the height of Mount Everest?"
+      ],
+      "responses": [
+        "Mount Everest is 8,848.86 meters (29,031.7 feet) tall, the highest point on Earth.",
+        "The height of Mount Everest is 8,848.86 meters (29,031.7 feet).",
+        "Mount Everest stands at a height of 8,848.86 meters (29,031.7 feet), making it the tallest mountain in the world."
+      ]
+    },
+    {
+      "tag": "equipment_climb_everest",
+      "patterns": [
+        "What equipment is needed to climb Mount Everest?",
+        "What are the essential tools for climbing Mount Everest?",
+        "Tell me about the gear required for Everest climbing",
+        "What gear do I need to climb Mount Everest?",
+        "What climbing equipment do I need for Mount Everest?"
+      ],
+      "responses": [
+        "An Everest expedition requires specialized high-altitude gear. The 'Institutional Essentials' are:\n\n• **Technical Clothing:** 8000m Down Suit, Merino wool base layers, and GORE-TEX hardshells.\n• **Footwear:** Triple-insulated boots (e.g., La Sportiva Olympus Mons), Crampons, and summit socks.\n• **Climbing Hardware:** Ice axe, Jumar (ascender), Descender, and locking Carabiners.\n• **Life Support:** High-flow oxygen regulators, TopOut masks, and 4L carbon fiber cylinders.\n\nWould you like me to explain the specs for any of these specific categories?"
+      ]
+    },
+    {
+      "tag": "eligibility_age",
+      "patterns": [
+        "What is the minimum age to climb Mount Everest?",
+        "How old do I need to be to summit Mount Everest?",
+        "How old do you have to be to climb Mount Everest?",
+        "What is the eligibility age for climbing Mount Everest?",
+        "Is there an age limit to climb Mount Everest?"
+      ],
+      "responses": [
+        "Climbers must generally be at least 16 years old, but it\u2019s common for teams to require climbers to be 18 or older.",
+        "Most expeditions require climbers to be at least 16 years old, but some may set a minimum age of 18 for safety reasons.",
+        "The minimum age to climb Mount Everest is typically 16 years old, though some climbing expeditions may set higher age limits, usually 18."
+      ]
+    },
+    {
+      "tag": "climb_duration",
+      "patterns": [
+        "How long does it take to climb Mount Everest?",
+        "How much time is needed to reach the top of Mount Everest?",
+        "How long is the climb to the top of Mount Everest?",
+        "How long does it take to reach the summit of Everest?",
+        "How many days does it take to summit Mount Everest?",
+        "What is the duration of climbing Mount Everest?",
+        "How long does the entire Everest expedition last?",
+        "What is the average time to summit Mount Everest?",
+        "How much time do climbers spend on Everest?",
+        "How many days does it take to climb Everest from base camp?"
+      ],
+      "responses": [
+        "An expedition to Mount Everest usually lasts 8-9 weeks, with climbers spending several weeks acclimatizing and adjusting to the altitude before attempting the summit.",
+        "It takes approximately 2 months to climb Mount Everest, including rest days, acclimatization, and waiting for weather windows.",
+        "A typical Everest expedition lasts around 60 to 70 days, depending on weather and acclimatization schedules.",
+        "Climbing Mount Everest generally takes around two months, including time for acclimatization, setting up camps, and waiting for favorable weather conditions.",
+        "The entire climb from base camp to summit and back typically spans 60-70 days due to acclimatization and necessary weather adjustments."
+      ]
+    },
+    {
+      "tag": "cost_to_climb",
+      "patterns": [
+        "How expensive is it to climb Mount Everest?",
+        "How much money do I need to climb Mount Everest?",
+        "How much does it cost to summit Mount Everest?",
+        "How much does it cost to ascend Mount Everest?",
+        "What is the cost to climb Mount Everest?",
+        "What is the price to climb Mount Everest?",
+        "What's the price for climbing Mount Everest?",
+        "What are the expenses involved in climbing Mount Everest?",
+        "How much does an Everest expedition cost?",
+        "How much does it cost to reach the top of Mount Everest?"
+      ],
+      "responses": [
+        "The cost varies widely, but an average Mount Everest expedition can cost from $35,000 to $80,000, including all logistics, permits, and necessary equipment.",
+        "Expeditions to climb Mount Everest cost between $30,000 and $100,000 USD. The cost includes things like permits, climbing gear, oxygen, Sherpa support, and insurance.",
+        "Climbing Mount Everest can cost anywhere between $30,000 and $100,000, which includes permits, guides, equipment, and logistical support.",
+        "The price for a Mount Everest expedition generally starts at $30,000, but it can go up to $100,000 or more, depending on the type of service, route, and guide you choose.",
+        "The cost to climb Mount Everest typically ranges from $30,000 to $100,000 USD, depending on the route, permits, and the services provided by the expedition company."
+      ]
+    },
+    {
+      "tag": "safety_measures",
+      "patterns": [
+        "How do mountaineers stay safe on Mount Everest?",
+        "What are the safety measures for Everest expeditions?",
+        "What steps are taken to ensure safety on Mount Everest?",
+        "What kind of safety precautions should climbers take on Everest?",
+        "What safety protocols are followed on Mount Everest?",
+        "What precautions are taken when climbing Mount Everest?",
+        "How do climbers stay safe on Mount Everest?",
+        "What safety measures are in place for climbing Mount Everest?",
+        "What is done to minimize risks when climbing Mount Everest?",
+        "How safe is it to climb Mount Everest?"
+      ],
+      "responses": [
+        "To minimize risks, climbers follow a strict acclimatization process, wear proper equipment, use supplemental oxygen at higher altitudes, and have access to emergency services if needed.",
+        "Safety protocols include wearing high-altitude gear, using supplemental oxygen, being accompanied by experienced Sherpas, and having emergency evacuation plans in place.",
+        "Climbers on Mount Everest follow strict safety measures, including using oxygen tanks above certain altitudes, wearing specialized gear, and undergoing thorough acclimatization to prevent altitude sickness.",
+        "Climbers on Mount Everest are required to wear oxygen masks and gear for extreme cold, follow acclimatization protocols, and are guided by experienced Sherpas to ensure safety.",
+        "Safety measures for Everest expeditions include acclimatization schedules, weather monitoring, trained guides, oxygen tanks, and emergency rescue plans."
+      ]
+    },
+    {
+      "tag": "emergency_support",
+      "patterns": [
+        "What emergency services are available on Mount Everest?",
+        "Is there emergency support on Mount Everest?",
+        "What happens if there's an emergency on Mount Everest?",
+        "How do climbers get help in an emergency on Everest?",
+        "Is there any emergency rescue on Mount Everest?"
+      ],
+      "responses": [
+        "Yes, there are emergency support services available, including helicopters for evacuation (if weather allows), trained Sherpas, and base camps with medical teams.",
+        "In case of an emergency, there are rescue teams and evacuation plans. However, weather conditions can sometimes limit the use of helicopters.",
+        "Emergency support on Mount Everest includes base camp medical teams and trained guides who can assist in emergencies, as well as helicopter evacuations under certain conditions."
+      ]
+    },
+    {
+      "tag": "medical_support",
+      "patterns": [
+        "Is there medical support on Mount Everest?",
+        "Where is medical help available on Mount Everest?",
+        "How do climbers get medical help on Everest?",
+        "Are there doctors or medical teams on Mount Everest?",
+        "How is medical support provided on Mount Everest?"
+      ],
+      "responses": [
+        "Mount Everest expeditions typically include a medical team at base camp to handle emergencies like altitude sickness or other conditions.",
+        "There are medical teams at the base camp, and climbers also have access to emergency evacuation in case of serious injuries or illnesses.",
+        "Medical support is available at base camp, and trained doctors or emergency medical technicians (EMTs) are often on hand to treat injuries or altitude sickness."
+      ]
+    },
+    {
+      "tag": "wheelchair_access",
+      "patterns": [
+        "Can people with disabilities climb Mount Everest?",
+        "Are there wheelchair-friendly facilities on Mount Everest?",
+        "Is there wheelchair access on Mount Everest?",
+        "How can people with immobility access Mount Everest?",
+        "Is Everest accessible for people with mobility issues?"
+      ],
+      "responses": [
+        "Due to the nature of the terrain and the extreme conditions on Mount Everest, wheelchair access is not available. However, there are accessible trekking routes in other areas of Nepal.",
+        "Mount Everest is not accessible to those with significant mobility challenges. The extreme altitude, rough terrain, and lack of infrastructure make it difficult for people with immobility to safely participate in the climb.",
+        "Mount Everest requires high levels of physical fitness and specialized gear, so it's not suited for climbers with mobility issues."
+      ]
+    },
+    {
+      "tag": "payment_methods",
+      "patterns": [
+        "Can I pay online for a Mount Everest expedition?",
+        "What are the accepted payment methods for Everest trips?",
+        "How can I pay for climbing Mount Everest?",
+        "How do I pay for my Everest climb?",
+        "What are the payment methods for Mount Everest expeditions?"
+      ],
+      "responses": [
+        "Payment methods for Mount Everest expeditions typically include credit/debit cards, wire transfers, and sometimes online payment systems like PayPal.",
+        "You can usually pay for an Everest expedition using a credit card or bank transfer. Some companies may also accept online payment methods.",
+        "Most Mount Everest expeditions accept payment via bank transfer, credit card, and sometimes PayPal. It's best to check with your chosen expedition company for specific payment options."
+      ]
+    },
+    {
+      "tag": "refund_policy",
+      "patterns": [
+        "Will I get a refund if I cancel my Everest expedition?",
+        "Can I get my money back if I don't summit Mount Everest?",
+        "What is the refund policy for Mount Everest climbs?",
+        "Can I get a refund for my Mount Everest expedition?",
+        "How do I request a refund for Everest expedition booking?"
+      ],
+      "responses": [
+        "Many companies have a non-refundable deposit. Refunds, if available, usually depend on the time of cancellation and the terms of the expedition agreement.",
+        "Refund policies vary depending on the expedition company, but most companies offer partial refunds if you cancel well in advance. However, cancellations closer to the departure date may result in no refund.",
+        "Refunds are often subject to the terms and conditions of the expedition company, and it\u2019s important to review these before booking. Some companies may offer partial refunds under certain circumstances."
+      ]
+    },
+    {
+      "tag": "gift_vouchers",
+      "patterns": [
+        "Is it possible to purchase a gift voucher for climbing Mount Everest?",
+        "Are gift vouchers available for Everest expeditions?",
+        "Can I buy a gift voucher for a Mount Everest climb?",
+        "How can I get a gift voucher for an Everest trip?",
+        "Do you offer gift vouchers for Mount Everest expeditions?"
+      ],
+      "responses": [
+        "Gift vouchers for Everest climbs are not typically available, but some companies may offer gift certificates for services such as trip planning, gear, or trekking in Nepal.",
+        "Check with your chosen Everest expedition company to see if they offer gift vouchers for specific services or trip packages.",
+        "Some Mount Everest expedition companies may offer gift vouchers for certain services like booking a trip or for equipment rentals. Check with the specific provider for more information."
+      ]
+    },
+    {
+      "tag": "points_earned",
+      "patterns": [
+        "How can I earn points for my Everest expedition?",
+        "Can I earn loyalty points for climbing Mount Everest?",
+        "Are there any reward points for Everest expedition bookings?",
+        "Do I earn points for booking a Mount Everest expedition?",
+        "Do I get any points for booking an Everest climb?"
+      ],
+      "responses": [
+        "While points or loyalty programs are uncommon in Mount Everest expeditions, some companies may offer discounts or promotions for frequent climbers or group trips.",
+        "You are unlikely to earn points for an Everest expedition, but some tour operators might offer special deals or benefits for returning customers.",
+        "Most Mount Everest expedition companies do not offer a loyalty or points system for bookings. However, some may offer discounts or deals for repeat customers or group bookings."
+      ]
+    },
+    {
+      "tag": "fallback",
+      "patterns": [
+        "what is the capital of France",
+        "tell me a joke",
+        "who is Cristiano Ronaldo",
+        "what's the weather today",
+        "do you like pizza",
+        "how to cook pasta",
+        "play me a song",
+        "what's 2 + 2",
+        "who's the president of USA",
+        "what is the meaning of life"
+      ],
+      "responses": [
+        "Sorry, I didn't understand that. Please ask something related to Mount Everest.",
+        "I'm here to answer Everest-related questions. Could you rephrase?",
+        "Hmm, I can only help with Mount Everest queries. Try asking something else!"
+      ]
+    },
+    {
+      "tag": "climbing_history",
+      "patterns": [
+        "Who first climbed Mount Everest?",
+        "Tell me about the first Everest summit",
+        "History of Everest summits?",
+        "When was Everest first climbed?",
+        "Who are the first people to reach Everest summit?"
+      ],
+      "responses": [
+        "Mount Everest was first successfully climbed by Sir Edmund Hillary and Tenzing Norgay on May 29, 1953.",
+        "The first successful ascent of Everest was in 1953 by Hillary and Norgay.",
+        "Edmund Hillary and Tenzing Norgay made history by summiting Everest in 1953."
+      ]
+    },
+    {
+      "tag": "famous_climbers",
+      "patterns": [
+        "Who are some famous Everest climbers?",
+        "Can you name renowned Everest mountaineers?",
+        "List of famous Everest summiteers?",
+        "Everest climbers in history?",
+        "Tell me about notable Everest climbers"
+      ],
+      "responses": [
+        "Famous Everest climbers include Reinhold Messner, Apa Sherpa, Jordan Romero, and Junko Tabei.",
+        "Junko Tabei was the first woman to summit Everest, and Kami Rita Sherpa holds the most summits.",
+        "Many renowned climbers like Edmund Hillary, Reinhold Messner, and Kenton Cool have left their mark on Everest."
+      ]
+    },
+    {
+      "tag": "weather_patterns",
+      "patterns": [
+        "What are the typical weather patterns on Everest?",
+        "Does Everest have seasonal weather changes?",
+        "How is the weather on Everest across the year?",
+        "Everest weather month by month?",
+        "How does Everest weather vary?"
+      ],
+      "responses": [
+        "Everest has extreme cold and high winds most of the year.",
+        "Weather on Everest varies greatly with short climbing windows in spring and autumn.",
+        "Expect snowstorms, freezing temperatures, and rapid weather changes on Everest."
+      ]
+    },
+    {
+      "tag": "packing_list",
+      "patterns": [
+        "What should I pack for Everest?",
+        "Packing checklist for Everest?",
+        "Essentials to bring on Everest expedition?",
+        "What to carry on Everest trek?",
+        "Give me a packing list for Everest climb"
+      ],
+      "responses": [
+        "Essential items include high-altitude boots, layered clothing, gloves, and sunglasses.",
+        "Don't forget snacks, a water purification system, sunscreen, and a medical kit.",
+        "Climbers usually pack technical gear, thermal wear, and personal items for hygiene."
+      ]
+    },
+    {
+      "tag": "risk_factors",
+      "patterns": [
+        "What are the dangers of climbing Everest?",
+        "List of risks in Everest expeditions?",
+        "How risky is Everest?",
+        "Is climbing Everest dangerous?",
+        "What hazards should I expect?"
+      ],
+      "responses": [
+        "Major risks include altitude sickness, avalanches, crevasses, frostbite, exhaustion, and severe weather.",
+        "Climbing Everest can be dangerous due to thin air, unstable icefalls, and unpredictable weather.",
+        "Even experienced climbers face risks such as hypothermia, snow blindness, and altitude-related illnesses."
+      ]
+    },
+    {
+      "tag": "training_duration",
+      "patterns": [
+        "How long should I train before Everest?",
+        "Training period before climbing Everest?",
+        "When should training start?",
+        "Is 6 months enough to train for Everest?",
+        "How long does Everest training take?"
+      ],
+      "responses": [
+        "Most climbers train for 6 to 12 months, focusing on endurance, strength, and altitude adaptation.",
+        "Many climbers start training at least 8 months in advance, including hikes and cardio sessions.",
+        "Your training should include high-altitude practice, strength conditioning, and long treks."
+      ]
+    },
+    {
+      "tag": "mental_preparation",
+      "patterns": [
+        "How to mentally prepare for Everest?",
+        "Psychological challenges of climbing Everest?",
+        "What mindset is needed for Everest?",
+        "How to stay mentally strong on Everest?",
+        "Mental preparation tips for climbing?"
+      ],
+      "responses": [
+        "Mental prep includes meditation, resilience building, and simulating stress situations.",
+        "Climbers need focus, discipline, and the ability to stay calm in high-pressure situations.",
+        "Visualization techniques and mental rehearsal help you stay confident during the climb."
+      ]
+    },
+    {
+      "tag": "environmental_impact",
+      "patterns": [
+        "Is climbing Everest bad for the environment?",
+        "What is the ecological impact of Everest climbs?",
+        "Environmental issues on Everest?",
+        "Does tourism harm Everest?",
+        "Garbage problems on Everest?"
+      ],
+      "responses": [
+        "Increased tourism has led to pollution and waste on Everest, especially at base camps.",
+        "Efforts are ongoing to reduce the ecological footprint with clean-up drives and permit limits.",
+        "Climbers and agencies are being urged to adopt 'leave no trace' ethics and sustainable practices."
+      ]
+    },
+    {
+      "tag": "garbage_management",
+      "patterns": [
+        "What happens to garbage on Everest?",
+        "Is there waste collection on Everest?",
+        "How is trash handled during expeditions?",
+        "Do climbers carry their garbage down?",
+        "Everest cleanup efforts?"
+      ],
+      "responses": [
+        "Expeditions are required to carry down their waste, including trash and human waste.",
+        "There are cleanup campaigns organized by the Nepalese government and NGOs to tackle trash buildup.",
+        "Some teams use biodegradable materials and leave deposit fees to ensure garbage removal."
+      ]
+    },
+    {
+      "tag": "gear_rental",
+      "patterns": [
+        "Can I rent climbing gear for Everest?",
+        "Is gear rental available in Nepal?",
+        "Where can I rent Everest equipment?",
+        "Can I borrow Everest gear?",
+        "Rental services for Everest climbers?"
+      ],
+      "responses": [
+        "Yes, gear rental services are available in Kathmandu and Lukla for items like boots and oxygen systems.",
+        "Most major equipment such as sleeping bags, down suits, and climbing harnesses can be rented.",
+        "Make sure to test your rented gear before the expedition to ensure proper fit and safety."
+      ]
+    },
+    {
+      "tag": "visa_requirements",
+      "patterns": [
+        "Do I need a visa to visit Nepal?",
+        "What are the visa requirements for Everest?",
+        "Can I get a visa on arrival in Nepal?",
+        "Nepal visa process for tourists?",
+        "Do climbers need a special visa?"
+      ],
+      "responses": [
+        "Most travelers need a tourist visa to enter Nepal, which can be obtained on arrival or online.",
+        "In addition to a tourist visa, climbers also need a special climbing permit for Everest.",
+        "Check the Nepal Immigration Department website for the most current visa policies."
+      ]
+    },
+    {
+      "tag": "group_size",
+      "patterns": [
+        "How many people are in a climbing team?",
+        "Typical team size for Everest?",
+        "Are climbs done in groups?",
+        "Do I need to join a group to climb Everest?",
+        "Can I climb Everest solo?"
+      ],
+      "responses": [
+        "Most expeditions are done in groups of 6–12 climbers, supported by Sherpas and guides.",
+        "Climbing solo is possible but extremely dangerous and rarely permitted by the authorities.",
+        "Team climbs allow for shared logistics, better safety, and mutual support on the mountain."
+      ]
+    },
+    {
+      "tag": "acclimatization",
+      "patterns": [
+        "What is acclimatization?",
+        "Why do climbers need to acclimatize?",
+        "How long does acclimatization take?",
+        "How to prevent altitude sickness?",
+        "Do I need to climb up and down for acclimatization?"
+      ],
+      "responses": [
+        "Acclimatization helps your body adjust to lower oxygen levels at high altitude.",
+        "Climbers often follow a 'climb high, sleep low' strategy to acclimate gradually.",
+        "Skipping acclimatization increases the risk of acute mountain sickness and serious complications."
+      ]
+    },
+    {
+      "tag": "death_zone",
+      "patterns": [
+        "What is the death zone on Everest?",
+        "Why is it called the death zone?",
+        "What altitude is the death zone?",
+        "Is it dangerous above 8000 meters?",
+        "What are the risks in the death zone?"
+      ],
+      "responses": [
+        "The 'death zone' refers to altitudes above 8,000 meters where oxygen is insufficient for survival.",
+        "In the death zone, your body starts to deteriorate, and prolonged exposure can be fatal.",
+        "Climbers try to spend as little time as possible in the death zone to reduce risk."
+      ]
+    },
+    {
+      "tag": "everest_height_changes",
+      "patterns": [
+        "Has Everest's height changed?",
+        "Did Everest get taller after the earthquake?",
+        "What is the new height of Everest?",
+        "How was Everest's height measured?",
+        "Why did Everest's height change?"
+      ],
+      "responses": [
+        "In 2020, Nepal and China jointly declared the new height as 8,848.86 meters.",
+        "Earthquakes and tectonic shifts may cause slight changes in Everest's height over time.",
+        "The revised height was measured using GPS and satellite radar technology."
+      ]
+    },
+    {
+      "tag": "oxygen_usage",
+      "patterns": [
+        "When do climbers use oxygen?",
+        "Is oxygen used above a certain height?",
+        "Do all climbers carry oxygen?",
+        "How much oxygen is needed to summit?",
+        "Can you climb Everest without oxygen?"
+      ],
+      "responses": [
+        "Most climbers start using oxygen above 7,000 meters, especially in the death zone.",
+        "Supplemental oxygen helps prevent fatigue and altitude sickness.",
+        "Only elite mountaineers attempt Everest without oxygen, and it's very risky."
+      ]
+    },
+    {
+      "tag": "everest_myths",
+      "patterns": [
+        "Are there myths about Everest?",
+        "Is it true there are bodies on Everest?",
+        "Weird facts about Everest?",
+        "What myths exist around Everest?",
+        "Any scary stories from Everest?"
+      ],
+      "responses": [
+        "Some myths include ghost stories, Yeti sightings, and climbers' bodies serving as trail markers.",
+        "While it's true that some bodies remain on Everest, many stories are exaggerated or misunderstood.",
+        "There are also inspiring legends about Sherpas and climbers’ bravery."
+      ]
+    },
+    {
+      "tag": "rest_days",
+      "patterns": [
+        "Do climbers take rest days?",
+        "How often do climbers rest?",
+        "Is there downtime during the climb?",
+        "Why are rest days important?",
+        "What happens on rest days?"
+      ],
+      "responses": [
+        "Yes, rest days are essential for acclimatization and energy recovery.",
+        "Climbers use rest days to hydrate, eat well, check gear, and let their bodies adapt.",
+        "Resting helps reduce the risk of altitude sickness and overexertion."
+      ]
+    },
+    {
+      "tag": "tech_on_everest",
+      "patterns": [
+        "Is there internet on Everest?",
+        "Can I use my phone on Everest?",
+        "What tech do climbers use?",
+        "Is GPS used during the climb?",
+        "Can I post photos from base camp?"
+      ],
+      "responses": [
+        "Yes, Everest Base Camp has satellite internet services, though expensive and limited.",
+        "Climbers use GPS, headlamps, radios, and action cameras like GoPros.",
+        "Phones may work in lower areas, but higher camps rely on satellite communication."
+      ]
+    },
+    {
+      "tag": "sherpa_support",
+      "patterns": [
+        "What is the role of Sherpas?",
+        "Do Sherpas carry all the gear?",
+        "Are Sherpas experienced climbers?",
+        "Why are Sherpas important?",
+        "Do Sherpas go to the summit?"
+      ],
+      "responses": [
+        "Sherpas are highly skilled mountain guides who support climbers with gear, logistics, and safety.",
+        "Many Sherpas summit Everest multiple times each season and are vital to every expedition.",
+        "They fix ropes, carry loads, set up camps, and help during emergencies."
+      ]
+    },
+    {
+      "tag": "female_climbers",
+      "patterns": [
+        "Can women climb Everest?",
+        "Who was the first woman to summit Everest?",
+        "Are there female mountaineers?",
+        "How many women have climbed Everest?",
+        "Is Everest safe for women?"
+      ],
+      "responses": [
+        "Yes, many women have successfully summited Everest since 1975.",
+        "Junko Tabei of Japan was the first woman to reach the summit of Everest.",
+        "Female climbers now make up a significant part of expeditions around the world."
+      ]
+    },
+    {
+      "tag": "children_climbing",
+      "patterns": [
+        "Can children climb Everest?",
+        "What is the youngest age for Everest?",
+        "Has a kid ever climbed Everest?",
+        "Are there age records on Everest?",
+        "Is it safe for children to climb?"
+      ],
+      "responses": [
+        "Jordan Romero summited Everest at age 13 from the Tibetan side.",
+        "Nepal requires climbers to be at least 16 years old.",
+        "Children climbing Everest must undergo special training and medical checks."
+      ]
+    },
+    {
+      "tag": "summit_photography",
+      "patterns": [
+        "Can I take photos at the summit?",
+        "Do climbers take cameras?",
+        "How do you take pictures on Everest?",
+        "Is photography allowed on Everest?",
+        "What cameras do climbers use?"
+      ],
+      "responses": [
+        "Climbers often carry GoPros or smartphones for summit shots, though batteries drain fast.",
+        "Photography is allowed, but gloves and freezing temperatures make it difficult.",
+        "Photos from the summit are cherished memories but require preparation."
+      ]
+    },
+    {
+      "tag": "record_holders",
+      "patterns": [
+        "Who holds Everest climbing records?",
+        "Most Everest summits by a person?",
+        "Fastest ascent of Everest?",
+        "Oldest climber to summit?",
+        "Any Guinness records on Everest?"
+      ],
+      "responses": [
+        "Kami Rita Sherpa holds the record for most Everest summits, with over 28 ascents.",
+        "The oldest person to summit was Yuichiro Miura of Japan at age 80.",
+        "Records also include fastest summit times and youngest climbers from various countries."
+      ]
+    },
+    {
+      "tag": "language_at_basecamp",
+      "patterns": [
+        "What language is spoken at base camp?",
+        "Do people speak English on Everest?",
+        "Language used during expeditions?",
+        "Can I talk to Sherpas in English?",
+        "Which language do climbers use?"
+      ],
+      "responses": [
+        "English is widely used among international teams and in base camp communications.",
+        "Sherpas often speak Nepali and basic English for guiding and coordination.",
+        "Translation is rarely an issue with experienced guides and expedition leaders."
+      ]
+    }
+  ]
+}
