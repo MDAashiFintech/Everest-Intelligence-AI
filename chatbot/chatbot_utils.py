@@ -17,6 +17,8 @@ MODEL_FOLDER = os.path.join(ROOT_FOLDER, "model")
 
 lemmatizer = WordNetLemmatizer()
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # This stops TensorFlow from printing warnings
+
 def load_ai_assets():
     try:
         # 1. Path to JSON is inside the chatbot folder
@@ -57,11 +59,15 @@ def bag_of_words(sentence):
 
 def predict_class(sentence):
     if model is None: return "error"
-    bow = bag_of_words(sentence)
-    res = model.predict(np.array([bow]), verbose=0)[0]
-    top_index = np.argmax(res)
-    # 0.70 threshold for better balance
-    return classes[top_index] if res[top_index] > 0.70 else "fallback"
+    try:
+        bow = bag_of_words(sentence)
+        # We add 'np.expand_dims' to make sure the shape is perfect for the model
+        res = model.predict(np.array([bow]), verbose=0)[0]
+        top_index = np.argmax(res)
+        return classes[top_index] if res[top_index] > 0.70 else "fallback"
+    except Exception as e:
+        print(f"Prediction Error: {e}")
+        return "error"
 
 def get_response(tag):
     if intents is None: return "Internal system is offline. Please check data paths."
