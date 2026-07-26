@@ -1,15 +1,7 @@
-# Flask
-# nltk
-# numpy==1.26.4
-# pandas
-# tensorflow-cpu==2.15.0
-# gunicorn
-# python-dotenv
-# requests
 streamlit
 nltk
-numpy==1.26.4
+numpy<2.0.0
 pandas
-tensorflow-cpu==2.15.0
+tensorflow-cpu
 python-dotenv
 requests

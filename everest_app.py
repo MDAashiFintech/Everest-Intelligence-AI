@@ -26,7 +26,7 @@ def load_brain():
     intents = json.loads(open("chatbot/intents.json", "r", encoding="utf-8").read())
     words = pickle.load(open("model/words.pkl", "rb"))
     classes = pickle.load(open("model/classes.pkl", "rb"))
-    model = load_model("model/chatbot_model.keras")
+    model = load_model("model/chatbot_model.h5")
     return intents, words, classes, model
 
 intents, words, classes, model = load_brain()
