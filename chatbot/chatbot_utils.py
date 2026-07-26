@@ -7,24 +7,26 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 
-# --- ABSOLUTE DISCOVERY PATHS ---
-# This looks for the files relative to this script, no matter where the server starts
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__)) # root/chatbot
-BASE_DIR = os.path.dirname(CURRENT_DIR)                  # root
-MODEL_DIR = os.path.join(BASE_DIR, "model")
-CHATBOT_DIR = os.path.join(BASE_DIR, "chatbot")
+# --- PATH-PROOF SYSTEM (MATCHES YOUR TREE) ---
+# This file is in /chatbot/chatbot_utils.py
+CHATBOT_FOLDER = os.path.dirname(os.path.abspath(__file__)) 
+# Root is one level up
+ROOT_FOLDER = os.path.dirname(CHATBOT_FOLDER)
+# Model is in /model/
+MODEL_FOLDER = os.path.join(ROOT_FOLDER, "model")
 
 lemmatizer = WordNetLemmatizer()
 
 def load_ai_assets():
     try:
-        # Construct paths
-        intents_path = os.path.join(CHATBOT_DIR, "intents.json")
-        words_path = os.path.join(MODEL_DIR, "words.pkl")
-        classes_path = os.path.join(MODEL_DIR, "classes.pkl")
-        model_path = os.path.join(MODEL_DIR, "chatbot_model.h5") # Fixed to .h5
+        # 1. Path to JSON is inside the chatbot folder
+        intents_path = os.path.join(CHATBOT_FOLDER, "intents.json")
+        # 2. Paths to models are in the model folder
+        words_path = os.path.join(MODEL_FOLDER, "words.pkl")
+        classes_path = os.path.join(MODEL_FOLDER, "classes.pkl")
+        model_path = os.path.join(MODEL_FOLDER, "chatbot_model.h5")
 
-        # Open and load
+        # Load assets
         with open(intents_path, "r", encoding="utf-8") as f:
             ints = json.load(f)
         
@@ -32,13 +34,13 @@ def load_ai_assets():
         c = pickle.load(open(classes_path, "rb"))
         m = load_model(model_path)
         
-        print(f"✅ AI CORE: System online and verified.")
+        print("✅ AI BRAIN: Assets successfully synced in the cloud.")
         return ints, w, c, m
     except Exception as e:
-        print(f"❌ AI CORE FAILURE: {str(e)}")
+        print(f"❌ AI BRAIN ERROR: {str(e)}")
         return None, None, None, None
 
-# Initialize assets immediately
+# Run loader
 intents, words, classes, model = load_ai_assets()
 
 def clean_up_sentence(sentence):
@@ -58,7 +60,7 @@ def predict_class(sentence):
     bow = bag_of_words(sentence)
     res = model.predict(np.array([bow]), verbose=0)[0]
     top_index = np.argmax(res)
-    # Threshold at 0.70 for professional accuracy
+    # 0.70 threshold for better balance
     return classes[top_index] if res[top_index] > 0.70 else "fallback"
 
 def get_response(tag):
@@ -68,5 +70,4 @@ def get_response(tag):
     for i in intents["intents"]:
         if i["tag"] == tag:
             return random.choice(i["responses"])
-            
-    return "I'm not sure how to assist with that. Could you provide more detail?"
+    return "I'm not sure how to answer that specifically."
