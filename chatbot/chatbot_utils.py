@@ -5,45 +5,45 @@ import numpy as np
 import os
 import nltk
 from nltk.stem import WordNetLemmatizer
+# We move the load_model import here to save memory at boot
 from tensorflow.keras.models import load_model
 
-# --- PATH-PROOF SYSTEM (MATCHES YOUR TREE) ---
-# This file is in /chatbot/chatbot_utils.py
-CHATBOT_FOLDER = os.path.dirname(os.path.abspath(__file__)) 
-# Root is one level up
-ROOT_FOLDER = os.path.dirname(CHATBOT_FOLDER)
-# Model is in /model/
-MODEL_FOLDER = os.path.join(ROOT_FOLDER, "model")
+# Force TensorFlow to use only 1 CPU thread (Saves massive RAM)
+os.environ['TF_NUM_INTEROP_THREADS'] = '1'
+os.environ['TF_NUM_INTRAOP_THREADS'] = '1'
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(CURRENT_DIR)
+MODEL_DIR = os.path.join(BASE_DIR, "model")
 
 lemmatizer = WordNetLemmatizer()
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # This stops TensorFlow from printing warnings
+# Global variables for the "Brain"
+intents = None
+words = None
+classes = None
+model = None
 
 def load_ai_assets():
+    global intents, words, classes, model
     try:
-        # 1. Path to JSON is inside the chatbot folder
-        intents_path = os.path.join(CHATBOT_FOLDER, "intents.json")
-        # 2. Paths to models are in the model folder
-        words_path = os.path.join(MODEL_FOLDER, "words.pkl")
-        classes_path = os.path.join(MODEL_FOLDER, "classes.pkl")
-        model_path = os.path.join(MODEL_FOLDER, "chatbot_model.h5")
-
-        # Load assets
-        with open(intents_path, "r", encoding="utf-8") as f:
-            ints = json.load(f)
+        if model is not None: # Already loaded
+            return True
+            
+        with open(os.path.join(CURRENT_DIR, "intents.json"), "r", encoding="utf-8") as f:
+            intents = json.load(f)
         
-        w = pickle.load(open(words_path, "rb"))
-        c = pickle.load(open(classes_path, "rb"))
-        m = load_model(model_path)
+        words = pickle.load(open(os.path.join(MODEL_DIR, "words.pkl"), "rb"))
+        classes = pickle.load(open(os.path.join(MODEL_DIR, "classes.pkl"), "rb"))
+        model = load_model(os.path.join(MODEL_DIR, "chatbot_model.h5"))
         
-        print("✅ AI BRAIN: Assets successfully synced in the cloud.")
-        return ints, w, c, m
+        print("✅ AI assets loaded into memory.")
+        return True
     except Exception as e:
-        print(f"❌ AI BRAIN ERROR: {str(e)}")
-        return None, None, None, None
+        print(f"❌ Load Failure: {e}")
+        return False
 
-# Run loader
-intents, words, classes, model = load_ai_assets()
+# We do NOT call load_ai_assets() here anymore. We wait for the first chat.
 
 def clean_up_sentence(sentence):
     sentence_words = nltk.word_tokenize(sentence)
@@ -58,22 +58,19 @@ def bag_of_words(sentence):
     return np.array(bag)
 
 def predict_class(sentence):
-    if model is None: return "error"
-    try:
-        bow = bag_of_words(sentence)
-        # We add 'np.expand_dims' to make sure the shape is perfect for the model
-        res = model.predict(np.array([bow]), verbose=0)[0]
-        top_index = np.argmax(res)
-        return classes[top_index] if res[top_index] > 0.70 else "fallback"
-    except Exception as e:
-        print(f"Prediction Error: {e}")
-        return "error"
+    # If the brain isn't awake yet, wake it up now
+    if model is None:
+        if not load_ai_assets(): return "error"
+        
+    bow = bag_of_words(sentence)
+    res = model.predict(np.array([bow]), verbose=0)[0]
+    idx = np.argmax(res)
+    return classes[idx] if res[idx] > 0.70 else "fallback"
 
 def get_response(tag):
-    if intents is None: return "Internal system is offline. Please check data paths."
-    if tag == "error": return "Memory retrieval error. Please try again."
+    if tag == "error": return "I'm having trouble accessing my memory modules."
+    if intents is None: load_ai_assets()
     
     for i in intents["intents"]:
-        if i["tag"] == tag:
-            return random.choice(i["responses"])
-    return "I'm not sure how to answer that specifically."
+        if i["tag"] == tag: return random.choice(i["responses"])
+    return "I'm not sure about that."
