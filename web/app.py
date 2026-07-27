@@ -12,8 +12,18 @@ load_dotenv()
 
 # Download NLTK data before anything else
 def init_infrastructure():
-    for pkg in ['punkt', 'punkt_tab', 'wordnet', 'omw-1.4']:
-        nltk.download(pkg, quiet=True)
+    packages = {
+        "punkt": "tokenizers/punkt",
+        "punkt_tab": "tokenizers/punkt_tab",
+        "wordnet": "corpora/wordnet",
+        "omw-1.4": "corpora/omw-1.4",
+    }
+
+    for pkg, path in packages.items():
+        try:
+            nltk.data.find(path)
+        except LookupError:
+            nltk.download(pkg, quiet=True)
 
 init_infrastructure()
 
@@ -33,8 +43,18 @@ def get_everest_weather():
     try:
         url = f"https://api.openweathermap.org/data/2.5/weather?lat=27.98&lon=86.92&appid={WEATHER_API_KEY}&units=metric"
         res = requests.get(url, timeout=5).json()
-        return {"temp": round(res["main"]["temp"]), "wind": round(res["wind"]["speed"] * 3.6), "desc": res["weather"][0]["description"].title()}
-    except: return {"temp": "--", "wind": "--", "desc": "Offline"}
+        return {
+            "temp": round(res["main"]["temp"]), 
+            "wind": round(res["wind"]["speed"] * 3.6), 
+            "desc": res["weather"][0]["description"].title()
+        }
+    except Exception as e:
+        print(e)
+        return {
+            "temp": "--",
+            "wind": "--",
+            "desc": "Offline"
+        }
 
 def get_summit_countdown():
     target = date(date.today().year, 5, 10)
@@ -47,7 +67,8 @@ try:
     with open(INTENTS_PATH, "r", encoding="utf-8") as f:
         intents_data = json.load(f)
     sidebar_data = [{"tag": i["tag"], "patterns": i["patterns"][:3]} for i in intents_data["intents"]]
-except:
+except Exception as e:
+    print(e)
     sidebar_data = []
 
 # --- 3. ROUTES ---
