@@ -8,7 +8,7 @@ A beginner-friendly step-by-step instruction to set up and run the chatbot proje
 ## ⚙️ System Requirements
 Python version: 3.12.2
 OS: macOS (also works on Windows/Linux with slight path changes)
-Terminal or VS Code recommended
+Terminal or VS Code recommended.
 
 ---
 
