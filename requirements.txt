@@ -2,7 +2,7 @@ Flask
 nltk
 numpy==1.26.4
 pandas
-tensorflow-cpu==2.15.0
+tensorflow-cpu
 gunicorn
 python-dotenv
 requests
