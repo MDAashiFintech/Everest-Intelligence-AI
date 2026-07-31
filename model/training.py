@@ -7,8 +7,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.layers import Dense, Dropout, Input
+from tensorflow.keras.optimizers.legacy import SGD
 
 # ───────────── Setup ─────────────
 nltk.download("punkt")
@@ -68,12 +68,14 @@ train_x = list(training[:, 0])
 train_y = list(training[:, 1])
 
 # ───────────── Model Definition ─────────────
-model = Sequential()
-model.add(Dense(128, input_shape=(len(train_x[0]),), activation="relu"))
-model.add(Dropout(0.5))
-model.add(Dense(64, activation="relu"))
-model.add(Dropout(0.5))
-model.add(Dense(len(train_y[0]), activation="softmax"))
+model = Sequential([
+    Input(shape=(len(train_x[0]),)),
+    Dense(128, activation="relu"),
+    Dropout(0.5),
+    Dense(64, activation="relu"),
+    Dropout(0.5),
+    Dense(len(train_y[0]), activation="softmax")
+])
 
 sgd = SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
@@ -84,7 +86,11 @@ hist = model.fit(
 )
 
 # ───────────── Save Outputs ─────────────
-model.save(os.path.join(OUTPUT_DIR, "chatbot_model.keras"), hist)
+# Save in the new Keras format
+model.save(os.path.join(OUTPUT_DIR, "chatbot_model.keras"))
+
+# Save in HDF5 format for compatibility
+model.save(os.path.join(OUTPUT_DIR, "chatbot_model.h5"))
 
 with open(os.path.join(OUTPUT_DIR, "training_data.pkl"), "wb") as f:
     pickle.dump((train_x, train_y), f)
